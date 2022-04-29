@@ -1,0 +1,115 @@
+namespace ConsoleApp12
+{
+    public class Marks
+    {
+        private int[] marks;
+        public Marks(int m)
+        {
+            marks = new int[m];
+        }
+        public int this[int index]
+        {
+            get { return marks[index]; }
+            set
+            {
+                if (value < 2 || value > 5) throw new ArgumentException();
+                else marks[index] = value;
+            }
+        }
+
+        public int Length()
+        {
+            return marks.Length;
+        }
+    }
+
+    public class Student
+    {
+        private Marks marks;
+        public Student(int m)
+        {
+            LastName = "";
+            marks = new Marks(m);
+        }
+        public string LastName { get; set; }
+
+        public Marks Marls
+        {
+            get { return marks; }
+        }
+        
+        public double AverageMark
+        {
+            get
+            {
+                double avg = 0;
+                for (int i = 0; i < marks.Length();i++)
+                {
+                    avg += marks[i];
+                }
+                avg = avg / marks.Length();
+                if (avg < 2 || avg > 5) throw new ArgumentException();
+                else return avg;
+            }
+            set { }
+        }
+
+        public void GetStudentInfo(int i)
+        {
+            Console.WriteLine("Info about {0} student", i);
+            Console.WriteLine(LastName + ": ");
+            for(int j = 0; j < marks.Length(); j++)
+            {
+                Console.Write(marks[j] + " ");
+            }
+            Console.WriteLine(AverageMark);
+        }
+    }
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Введите кол-во студентов");
+            int n = int.Parse(Console.ReadLine());
+            Console.WriteLine("Введите кол-во оценок у студента");
+            int m = int.Parse(Console.ReadLine());
+            var students = new Student[n];
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("Введите имя студента");
+                string lastName = Console.ReadLine();
+                students[i] = new Student(m);
+                for (int j = 0; j < m; j++)
+                {
+                    students[i].Marls[j] = int.Parse(Console.ReadLine());
+                }
+
+                students[i].LastName = lastName;
+            }
+            Sorting(students);
+
+            for (int i = 0; i < n; i++)
+            {
+                students[i].GetStudentInfo(i + 1);
+            }
+        }
+
+        public static void Sorting(Student[] students)
+        {
+            for (int i = 0; i < students.Length; i++)
+            {
+                for (int j = 0; j < students.Length; j++)
+                {
+                    if (students[j].AverageMark > students[i].AverageMark)
+                    {
+                        var temp = students[j];
+                        students[j] = students[i];
+                        students[i] = temp;
+                    }
+                }
+            }
+        }
+    }
+}
